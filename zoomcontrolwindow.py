@@ -79,19 +79,24 @@ class controlWindow:
         builder.add_from_file(filename)
         builder.connect_signals(self)
         self._onoffbutton = builder.get_object("zoom_on_off_button")
+        self._refresh_zoom_button_label()
+        window = builder.get_object("zoomcontrolwindow")
+        window.show()
+
+    def _refresh_zoom_button_label(self):
         if self._z.isActive():
             self._onoffbutton.set_label("Zoom Off")
         else:
             self._onoffbutton.set_label("Zoom On")
-        window = builder.get_object("zoomcontrolwindow")
-        window.show()
-
+        
 
     def on_buttonZoomIn_clicked(self, widget):
         self._z.zoomIn()
+        self._refresh_zoom_button_label()
 
     def on_buttonZoomOut_clicked(self, widget):
         self._z.zoomOut()
+        self._refresh_zoom_button_label()
     
     def on_window_destroy(self, widget):
         sys.exit()
@@ -99,10 +104,10 @@ class controlWindow:
     def on_buttonZoomOnOff_clicked(self, widget):
         if self._z.isActive():        
             self._z.zoomOff()
-            self._onoffbutton.set_label("Zoom On")
+            self._refresh_zoom_button_label()
         else:
             self._z.zoomOn()
-            self._onoffbutton.set_label("Zoom Off")
+            self._refresh_zoom_button_label()
 
 app = controlWindow()
 gtk.main()
