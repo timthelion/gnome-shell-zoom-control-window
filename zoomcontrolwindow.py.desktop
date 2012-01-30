@@ -1,0 +1,9 @@
+
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/zoomcontrolwindow.py
+Hidden=false
+OnlyShowIn=GNOME;
+Name=Zoom
+Comment=Control zoom functionality in a floating window.
+Name[cs_CZ]=zoomcontrolwindow.py.desktop
