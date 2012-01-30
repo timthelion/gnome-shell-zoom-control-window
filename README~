@@ -7,5 +7,4 @@ GPLv3
 
 This is a fork of https://github.com/tobiasquinn/gnome-shell-mousewheel-zoom
 by Tobias Quinn. This fork uses a floating window to control zoom levels, rather
-than controlling them using the mouse wheel.  This is useful for tablets and other
-mouse only devices.
+than 

@@ -1,15 +1,13 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: gnome-shell-zoom-control-window
-Source: 
+Upstream-Name: gnome-shell-mousewheel-zoom
+Source: https://github.com/tobiasquinn/gnome-shell-mousewheel-zoom
 
 Files: *
-Copyright: 2012 Timothy Hobbs <timothyhobbs@seznam.cz>
-and 2011 Tobias Quinn <tobias@tobiasquinn.com>
+Copyright: 2011 Tobias Quinn <tobias@tobiasquinn.com>
 License: GPL-3.0+
 
 Files: debian/*
-Copyright: 2012 Timothy Hobbs <timothyhobbs@seznam.cz>
-and 2011 Tobias Quinn <tobias@tobiasquinn.com>
+Copyright: 2011 Tobias Quinn <tobias@tobiasquinn.com>
 License: GPL-3.0+
 
 License: GPL-3.0+

@@ -1,7 +1,3 @@
-forked project to create zoomcontrolwindow (0.0.1) timthelion 
-
-  * Controll the zoom function through a floating window for use on tablet or other mouse only device.
-
 gnome-shell-mousewheel-zoom (0.5.5-1) oneiric; urgency=low
 
   * Only autostart on gnome-shell session 

@@ -14,7 +14,5 @@
 
 override_dh_install:
 	dh_install zoomcontrolwindow.py /usr/bin/
-    dh_install zoomcontrolwindow.glade /usr/share/zoomcontrolwindow/zoomcontrolwindow.glade
-    dh_install zoomcontrolwindow.py.desktop /usr/share/applications/zoomcontrolwindow.py.desktop
 
 .PHONY: override_dh_install

@@ -9,4 +9,6 @@ Homepage:
 Package: gnome-shell-zoom-control-window
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, python-dbus, gnome-shell
-Description: Enables zooming of the gnome shell using a floating window for zooming on tablets and other mouse only devices.
+Description: Enables zooming of the gnome shell using alt and mousewheel
+ This uses python-xlib and python-dbus to allow the gnome shell to be zoomed
+ using the alt modifier and mouse scrollwheel

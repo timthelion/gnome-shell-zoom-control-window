@@ -31,7 +31,6 @@ build() {
 
   install -D -m755 ${srcdir}/$_gitname/zoomcontrolwindow.py "${pkgdir}/usr/bin/zoomcontrolwindow.py" || return 1
   install -D -m644 ${srcdir}/$_gitname/zoomcontrolwindow.py.desktop "${pkgdir}/usr/share/applications/zoomcontrolwindow.py.desktop" || return 1
-  install -D -m644 ${srcdir}/$_gitname/zoomcontrolwindow.glade "${pkgdir}/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade" || return 1
 }
 
 # vim:set ts=2 sw=2 et:
