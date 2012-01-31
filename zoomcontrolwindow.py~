@@ -80,10 +80,25 @@ class controlWindow:
         builder.connect_signals(self)
         self._onoffbutton = builder.get_object("zoom_on_off_button")
         self._refresh_zoom_button_label()
-        window = builder.get_object("zoomcontrolwindow")
-        window.show()
+        self._window = builder.get_object("zoomcontrolwindow")
+        self._window.show()
+        self._window.set_keep_above(True)
+        #make a status icon
+        self.statusicon = gtk.status_icon_new_from_stock(gtk.STOCK_FIND)
+        self.statusicon.connect('activate', self.status_clicked )
+        self.statusicon.connect('popup-menu', self.make_menu )
+        self.statusicon.set_tooltip("Zoom")
 
-    def _refresh_zoom_button_label():
+    def make_menu(event_button, event_time, data=None, a=None):
+        menu = gtk.Menu()
+        exit_item = gtk.MenuItem("Exit")
+        menu.append(exit_item)
+        exit_item.connect_object("activate", close_app, "Exit")
+        exit_item.show()
+        menu.popup(None, None, None, 0,0)
+
+
+    def _refresh_zoom_button_label(self):
         if self._z.isActive():
             self._onoffbutton.set_label("Zoom Off")
         else:
@@ -98,9 +113,6 @@ class controlWindow:
         self._z.zoomOut()
         self._refresh_zoom_button_label()
     
-    def on_window_destroy(self, widget):
-        sys.exit()
-
     def on_buttonZoomOnOff_clicked(self, widget):
         if self._z.isActive():        
             self._z.zoomOff()
@@ -108,6 +120,24 @@ class controlWindow:
         else:
             self._z.zoomOn()
             self._refresh_zoom_button_label()
+
+    def on_window_delete(self, window, widget):
+        #don't delete; hide instead
+        self._window.hide_on_delete()
+        return True
+
+    def status_clicked(self,status):
+        if self._window.get_visible():
+            self._window.hide_on_delete()        
+        else:
+            #unhide the window
+            self._window.show_all()
+
+    def on_status_right_click(data, event_button, event_time):
+        make_menu(event_button, event_time)
+
+def close_app(data=None):
+    gtk.main_quit()
 
 app = controlWindow()
 gtk.main()
