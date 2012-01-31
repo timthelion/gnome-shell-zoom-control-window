@@ -81,13 +81,16 @@ class controlWindow:
         self._onoffbutton = builder.get_object("zoom_on_off_button")
         self._refresh_zoom_button_label()
         self._window = builder.get_object("zoomcontrolwindow")
-        self._window.show()
-        self._window.set_keep_above(True)
+        self.show_above()
         #make a status icon
         self.statusicon = gtk.status_icon_new_from_stock(gtk.STOCK_FIND)
         self.statusicon.connect('activate', self.status_clicked )
         self.statusicon.connect('popup-menu', self.make_menu )
         self.statusicon.set_tooltip("Zoom")
+
+    def show_above(self):
+        self._window.show()
+        self._window.set_keep_above(True)
 
     def make_menu(event_button, event_time, data=None, a=None):
         menu = gtk.Menu()
@@ -131,7 +134,7 @@ class controlWindow:
             self._window.hide_on_delete()        
         else:
             #unhide the window
-            self._window.show_all()
+            self.show_above()
 
     def on_status_right_click(data, event_button, event_time):
         make_menu(event_button, event_time)
