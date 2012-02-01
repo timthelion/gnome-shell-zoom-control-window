@@ -29,10 +29,10 @@ class Zoomer:
     def zoomIn(self):
         cz=self.getMagFactor()
         if self.isActive():    
-            self.cz[0] *= (1.0+incr)
-            self.cz[1] *= (1.0+incr)
+            cz[0] *= (1.0+incr)
+            cz[1] *= (1.0+incr)
             try:
-                self._zoom.setMagFactor(self.cz[0], self.cz[1])
+                self._zoom.setMagFactor(cz[0], cz[1])
             except DBusException:
                 self._refreshDBUS()
         else:
@@ -45,13 +45,13 @@ class Zoomer:
     def zoomOut(self):
         if self.isActive():
             cz=self.getMagFactor()
-            self.cz[0] *= (1.0-incr)
-            self.cz[1] *= (1.0-incr)
-            if self.cz[0] <= 1:
+            cz[0] *= (1.0-incr)
+            cz[1] *= (1.0-incr)
+            if cz[0] <= 1:
                 self._mag.setActive(False)
             else:
                 try:
-                    self._zoom.setMagFactor(self.cz[0], self.cz[1])
+                    self._zoom.setMagFactor(cz[0], cz[1])
                 except DBusException:
                     self._refreshDBUS()
 
@@ -78,8 +78,9 @@ class controlWindow:
     def __init__(self):
         self._z = Zoomer()
         filename = "/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"
-        if not os.path.exists("/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"):
-            filename = "zoomcontrolwindow.glade"
+        if not os.path.exists("/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade") or "-l" in sys.argv:
+            print "Using GTKBuilder file from local directory.
+            filename = "zoomcontrolwindow.glade"            
         builder = gtk.Builder()
         builder.add_from_file(filename)
         builder.connect_signals(self)

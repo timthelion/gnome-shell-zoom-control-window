@@ -78,8 +78,9 @@ class controlWindow:
     def __init__(self):
         self._z = Zoomer()
         filename = "/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"
-        if not os.path.exists("/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"):
-            filename = "zoomcontrolwindow.glade"
+        if not os.path.exists("/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade") or "-l" in sys.argv:
+            print "Using GTKBuilder file from local directory."
+            filename = "zoomcontrolwindow.glade"            
         builder = gtk.Builder()
         builder.add_from_file(filename)
         builder.connect_signals(self)
