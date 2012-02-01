@@ -5,7 +5,7 @@
 # (c) Sep 2011, Tobias Quinn <tobias@tobiasquinn.com>
 # GPLv3
 
-import dbus, sys
+import dbus, sys, os
 from dbus import DBusException
 session_bus = dbus.SessionBus()
 
@@ -75,6 +75,8 @@ class controlWindow:
     def __init__(self):
         self._z = Zoomer()
         filename = "/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"
+        if not os.path.exists("/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"):
+            filename = "zoomcontrolwindow.glade"
         builder = gtk.Builder()
         builder.add_from_file(filename)
         builder.connect_signals(self)
