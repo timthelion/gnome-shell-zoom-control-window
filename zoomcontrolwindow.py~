@@ -16,9 +16,6 @@ incr = 0.1
 class Zoomer:
     def __init__(self):
         self._refreshDBUS()
-        self._active = self._mag.isActive()
-        cz = self._zoom.getMagFactor()
-        self._currentZoom = [cz[0], cz[1]]
 
     def _refreshDBUS(self):
         self._mag = session_bus.get_object(
@@ -30,11 +27,12 @@ class Zoomer:
                 '/org/gnome/Magnifier/ZoomRegion/zoomer0')
 
     def zoomIn(self):
-        if self._active:
-            self._currentZoom[0] *= (1.0+incr)
-            self._currentZoom[1] *= (1.0+incr)
+        cz=self.getMagFactor()
+        if self.isActive():    
+            self.cz[0] *= (1.0+incr)
+            self.cz[1] *= (1.0+incr)
             try:
-                self._zoom.setMagFactor(self._currentZoom[0], self._currentZoom[1])
+                self._zoom.setMagFactor(self.cz[0], self.cz[1])
             except DBusException:
                 self._refreshDBUS()
         else:
@@ -42,33 +40,38 @@ class Zoomer:
                 self._zoom.setMagFactor(1 + incr, 1 + incr)
             except DBusException:
                 self._refreshDBUS()
-            self._currentZoom = [1 + incr, 1 + incr]
             self._mag.setActive(True)
-            self._active = True
 
     def zoomOut(self):
-        if self._active:
-            self._currentZoom[0] *= (1.0-incr)
-            self._currentZoom[1] *= (1.0-incr)
-            if self._currentZoom[0] <= 1:
+        if self.isActive():
+            cz=self.getMagFactor()
+            self.cz[0] *= (1.0-incr)
+            self.cz[1] *= (1.0-incr)
+            if self.cz[0] <= 1:
                 self._mag.setActive(False)
-                self._active = False
             else:
                 try:
-                    self._zoom.setMagFactor(self._currentZoom[0], self._currentZoom[1])
+                    self._zoom.setMagFactor(self.cz[0], self.cz[1])
                 except DBusException:
                     self._refreshDBUS()
 
+    def getMagFactor(self):
+        try:
+           cz = self._zoom.getMagFactor()
+           return [cz[0], cz[1]]
+        except DBusException:
+           self._refreshDBUS()
+           cz = self._zoom.getMagFactor()
+           return [cz[0], cz[1]]
+
     def zoomOff(self):
         self._mag.setActive(False)
-        self._active = False
 
     def zoomOn(self):
         self._mag.setActive(True)
-        self._active = True
 
     def isActive(self):
-        return self._active
+        return self._mag.isActive()
 
 
 class controlWindow:
