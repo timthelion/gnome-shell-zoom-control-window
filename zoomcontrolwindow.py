@@ -2,47 +2,31 @@
 # -*- coding: utf-8 -*-
 
 # gnome-shell-zoom-control-window
-# (c) Jan 2012, Timothy Hobbs <timothyhobbs@seznam.cz>
+# (c) May 2012, Timothy Hobbs <timothyhobbs@seznam.cz>
 # (c) Sep 2011, Tobias Quinn <tobias@tobiasquinn.com>
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # GPLv3
 
 import dbus, sys, os
-from gi.repository.Gio import Settings
+import GnomeZoomSettings
 
 import gtk
 
-incr = 0.1
-
-class Zoomer:
-    def __init__(self):
-        self._refreshSettings()
-
-    def _refreshSettings(self):
-        self.a11yAppPrefs = Settings('org.gnome.desktop.a11y.applications')
-        self.magPrefs = Settings('org.gnome.desktop.a11y.magnifier')
-
-    def zoomIn(self):
-		mag_factor = self.magPrefs.get_double('mag-factor')
-		self.magPrefs.set_double('mag-factor', mag_factor + incr)
-		self.zoomOn()
-
-    def zoomOut(self):
-		mag_factor = self.magPrefs.get_double('mag-factor')
-		self.magPrefs.set_double('mag-factor', mag_factor - incr)
-		self.zoomOn()
-
-    def zoomOff(self):
-        self.a11yAppPrefs.set_boolean('screen-magnifier-enabled', False)
-
-    def zoomOn(self):
-        self.a11yAppPrefs.set_boolean('screen-magnifier-enabled', True)
-
-    def isActive(self):
-        return self.a11yAppPrefs.get_boolean('screen-magnifier-enabled')
-
 class controlWindow:
     def __init__(self):
-        self._z = Zoomer()
+        self._z = GnomeZoomSettings.Zoomer()
         filename = "/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade"
         if not os.path.exists("/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade") or "-l" in sys.argv:
             print "Using GTKBuilder file from local directory."
