@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 # gnome-shell-zoom-control-window
 # (c) Jan 2012, Timothy Hobbs <timothyhobbs@seznam.cz>
@@ -6,8 +7,7 @@
 # GPLv3
 
 import dbus, sys, os
-from dbus import DBusException
-session_bus = dbus.SessionBus()
+from gi.repository.Gio import Settings
 
 import gtk
 
@@ -15,64 +15,30 @@ incr = 0.1
 
 class Zoomer:
     def __init__(self):
-        self._refreshDBUS()
+        self._refreshSettings()
 
-    def _refreshDBUS(self):
-        self._mag = session_bus.get_object(
-                'org.gnome.Magnifier',
-                '/org/gnome/Magnifier')
-        self._mag.getZoomRegions()
-        self._zoom = session_bus.get_object(
-                'org.gnome.Magnifier',
-                '/org/gnome/Magnifier/ZoomRegion/zoomer0')
+    def _refreshSettings(self):
+        self.a11yAppPrefs = Settings('org.gnome.desktop.a11y.applications')
+        self.magPrefs = Settings('org.gnome.desktop.a11y.magnifier')
 
     def zoomIn(self):
-        cz=self.getMagFactor()
-        if self.isActive():    
-            cz[0] *= (1.0+incr)
-            cz[1] *= (1.0+incr)
-            try:
-                self._zoom.setMagFactor(cz[0], cz[1])
-            except DBusException:
-                self._refreshDBUS()
-        else:
-            try:
-                self._zoom.setMagFactor(1 + incr, 1 + incr)
-            except DBusException:
-                self._refreshDBUS()
-            self._mag.setActive(True)
+		mag_factor = self.magPrefs.get_double('mag-factor')
+		self.magPrefs.set_double('mag-factor', mag_factor + incr)
+		self.zoomOn()
 
     def zoomOut(self):
-        if self.isActive():
-            cz=self.getMagFactor()
-            cz[0] *= (1.0-incr)
-            cz[1] *= (1.0-incr)
-            if cz[0] <= 1:
-                self._mag.setActive(False)
-            else:
-                try:
-                    self._zoom.setMagFactor(cz[0], cz[1])
-                except DBusException:
-                    self._refreshDBUS()
-
-    def getMagFactor(self):
-        try:
-           cz = self._zoom.getMagFactor()
-           return [cz[0], cz[1]]
-        except DBusException:
-           self._refreshDBUS()
-           cz = self._zoom.getMagFactor()
-           return [cz[0], cz[1]]
+		mag_factor = self.magPrefs.get_double('mag-factor')
+		self.magPrefs.set_double('mag-factor', mag_factor - incr)
+		self.zoomOn()
 
     def zoomOff(self):
-        self._mag.setActive(False)
+        self.a11yAppPrefs.set_boolean('screen-magnifier-enabled', False)
 
     def zoomOn(self):
-        self._mag.setActive(True)
+        self.a11yAppPrefs.set_boolean('screen-magnifier-enabled', True)
 
     def isActive(self):
-        return self._mag.isActive()
-
+        return self.a11yAppPrefs.get_boolean('screen-magnifier-enabled')
 
 class controlWindow:
     def __init__(self):
