@@ -14,6 +14,7 @@ build() {
   cd "$srcdir"
 
   install -D -m755 ${srcdir}/../zoomcontrolwindow.py "${pkgdir}/usr/bin/zoomcontrolwindow.py" || return 1
+  install -D -m644 ${srcdir}/../GnomeZoomSettings.py "${pkgdir}/usr/bin/GnomeZoomSettings.py" || return 1
   install -D -m644 ${srcdir}/../zoomcontrolwindow.py.desktop "${pkgdir}/usr/share/applications/zoomcontrolwindow.py.desktop" || return 1
   install -D -m644 ${srcdir}/../zoomcontrolwindow.glade "${pkgdir}/usr/share/zoomcontrolwindow/zoomcontrolwindow.glade" || return 1
 }
